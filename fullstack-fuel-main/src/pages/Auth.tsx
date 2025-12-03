@@ -229,8 +229,15 @@ const Auth = () => {
       {/* Left side - Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <img
-          src={authImage}
+          src="/login-hero.jpg"
           alt="Professional using tablet"
+          onError={(e) => {
+            // fallback to bundled asset if public file isn't present
+            const target = e.currentTarget as HTMLImageElement;
+            if (target && target.src.indexOf("login-hero.jpg") !== -1) {
+              target.src = authImage;
+            }
+          }}
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-primary/40" />
