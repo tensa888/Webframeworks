@@ -30,8 +30,12 @@ const Hero = () => {
           <div className="relative animate-fade-in" style={{ animationDelay: "0.2s" }}>
             <div className="relative rounded-2xl overflow-hidden shadow-elevated">
               <img
-                src={heroImage}
+                src={"https://vidyashilp.edu.in/wp-content/uploads/2023/04/slide_banner1.jpg"}
                 alt="Students and professionals collaborating in modern office"
+                onError={(e) => {
+                  const t = e.currentTarget as HTMLImageElement;
+                  if (t && t.src.indexOf("vidyashilp.edu.in") !== -1) t.src = heroImage;
+                }}
                 className="w-full h-auto"
               />
             </div>
