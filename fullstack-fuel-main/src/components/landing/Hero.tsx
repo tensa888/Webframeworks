@@ -46,7 +46,7 @@ const Hero = () => {
                 </div>
               </div>
             </div>
-            {/* Middle image removed as requested */}
+            {/* middle image removed */}
             <div className="absolute -top-4 -right-4 bg-card rounded-xl p-4 shadow-lg border border-border hidden lg:block">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
