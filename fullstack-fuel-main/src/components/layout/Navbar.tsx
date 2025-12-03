@@ -35,11 +35,30 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
-            {/* Top-right menu with partner/mentor/upscale links */}
+            <Button variant="ghost" asChild>
+              <Link to="/auth">Login</Link>
+            </Button>
+            <Button asChild>
+              <Link to="/auth?mode=signup">Sign Up</Link>
+            </Button>
+
+            {/* Rightmost menu button styled as 3x3 dots grid */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="px-2" aria-label="More">
-                  Menu
+                <Button variant="ghost" className="w-10 h-10 p-2 rounded-md" aria-label="More">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="currentColor">
+                      <circle cx="3" cy="3" r="1.2" />
+                      <circle cx="9" cy="3" r="1.2" />
+                      <circle cx="15" cy="3" r="1.2" />
+                      <circle cx="3" cy="9" r="1.2" />
+                      <circle cx="9" cy="9" r="1.2" />
+                      <circle cx="15" cy="9" r="1.2" />
+                      <circle cx="3" cy="15" r="1.2" />
+                      <circle cx="9" cy="15" r="1.2" />
+                      <circle cx="15" cy="15" r="1.2" />
+                    </g>
+                  </svg>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent side="bottom" className="w-56">
@@ -54,13 +73,6 @@ const Navbar = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            <Button variant="ghost" asChild>
-              <Link to="/auth">Login</Link>
-            </Button>
-            <Button asChild>
-              <Link to="/auth?mode=signup">Sign Up</Link>
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}
