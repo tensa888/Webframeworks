@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero-image.jpg";
+// Use external or public placeholder images; removed bundled heroImage import
 
 const Hero = () => {
   return (
@@ -32,10 +32,6 @@ const Hero = () => {
               <img
                 src={"https://vidyashilp.edu.in/wp-content/uploads/2023/04/slide_banner1.jpg"}
                 alt="Students and professionals collaborating in modern office"
-                onError={(e) => {
-                  const t = e.currentTarget as HTMLImageElement;
-                  if (t && t.src.indexOf("vidyashilp.edu.in") !== -1) t.src = heroImage;
-                }}
                 className="w-full h-auto"
               />
             </div>
@@ -53,7 +49,7 @@ const Hero = () => {
             {/* Inserted image between the two stat cards (prefers public/home-insert.jpg) */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none hidden lg:flex">
               <div className="w-36 h-24 rounded-lg overflow-hidden shadow-lg border border-border bg-white">
-                <img src={heroImage} alt="Campus building" className="w-full h-full object-cover" />
+                <img src={"https://vidyashilp.edu.in/wp-content/uploads/2023/04/slide_banner1.jpg"} alt="Campus building" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="absolute -top-4 -right-4 bg-card rounded-xl p-4 shadow-lg border border-border hidden lg:block">
