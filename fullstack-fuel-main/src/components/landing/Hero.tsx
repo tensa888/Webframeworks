@@ -46,6 +46,20 @@ const Hero = () => {
                 </div>
               </div>
             </div>
+            {/* Inserted image between the two stat cards (prefers public/home-insert.jpg) */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none hidden lg:flex">
+              <div className="w-36 h-24 rounded-lg overflow-hidden shadow-lg border border-border bg-white">
+                <img
+                  src="/home-insert.jpg"
+                  alt="Campus building"
+                  onError={(e) => {
+                    const t = e.currentTarget as HTMLImageElement;
+                    if (t && t.src.indexOf("home-insert.jpg") !== -1) t.src = heroImage;
+                  }}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
             <div className="absolute -top-4 -right-4 bg-card rounded-xl p-4 shadow-lg border border-border hidden lg:block">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
