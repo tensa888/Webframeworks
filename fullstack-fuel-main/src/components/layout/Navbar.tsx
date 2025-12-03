@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { GraduationCap, Menu, X } from "lucide-react";
 import { useState } from "react";
 
@@ -34,6 +35,26 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
+            {/* Top-right menu with partner/mentor/upscale links */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="px-2" aria-label="More">
+                  Menu
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="bottom" className="w-56">
+                <DropdownMenuItem>
+                  <Link to="/become-partner" className="w-full block">Becoming partner</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/become-mentor" className="w-full block">Becoming mentor</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/upscale" className="w-full block">Upscale</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Button variant="ghost" asChild>
               <Link to="/auth">Login</Link>
             </Button>
@@ -66,6 +87,15 @@ const Navbar = () => {
               </Link>
               <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                 About
+              </Link>
+              <Link to="/become-partner" className="text-muted-foreground hover:text-foreground transition-colors">
+                Becoming partner
+              </Link>
+              <Link to="/become-mentor" className="text-muted-foreground hover:text-foreground transition-colors">
+                Becoming mentor
+              </Link>
+              <Link to="/upscale" className="text-muted-foreground hover:text-foreground transition-colors">
+                Upscale
               </Link>
               <div className="flex gap-3 pt-4">
                 <Button variant="outline" asChild className="flex-1">
