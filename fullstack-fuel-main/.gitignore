@@ -22,3 +22,23 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment files
+.env
+.env.local
+.env.*
+.env.*.local
+
+# Build / cache
+dist/
+out/
+.cache/
+.vite/
+build/
+
+# OS files
+Thumbs.db
+
+# Database files
+*.sqlite
+*.sqlite3
