@@ -46,12 +46,7 @@ const Hero = () => {
                 </div>
               </div>
             </div>
-            {/* Inserted image between the two stat cards (prefers public/home-insert.jpg) */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none hidden lg:flex">
-              <div className="w-36 h-24 rounded-lg overflow-hidden shadow-lg border border-border bg-white">
-                <img src={"https://vidyashilp.edu.in/wp-content/uploads/2023/04/slide_banner1.jpg"} alt="Campus building" className="w-full h-full object-cover" />
-              </div>
-            </div>
+            {/* Middle image removed as requested */}
             <div className="absolute -top-4 -right-4 bg-card rounded-xl p-4 shadow-lg border border-border hidden lg:block">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
