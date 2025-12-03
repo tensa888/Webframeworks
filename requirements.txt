@@ -1,0 +1,9 @@
+# requirements.txt for this project
+# This repository is a Node.js + Vite React project. There are no Python
+# dependencies required by default. Use `npm install` in the project folder
+# to install the JavaScript dependencies.
+#
+# If you need Python packages for tooling or scripts, add them below, e.g.:
+# flask==2.2.5
+# requests==2.31.0
+

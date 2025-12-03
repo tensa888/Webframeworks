@@ -292,7 +292,11 @@ const Auth = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={
+                    mode === "signup" && searchParams.get("type") === "company"
+                      ? "enter company email"
+                      : "Enter your email"
+                  }
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
