@@ -13,6 +13,7 @@ import CompanySignup from "./pages/CompanySignup";
 import CompanyLogin from "./pages/CompanyLogin";
 import CompanyRegister from "./pages/CompanyRegister";
 import Extras from "./pages/Extras";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/company-login" element={<CompanyLogin />} />
           <Route path="/company-register" element={<CompanyRegister />} />
           <Route path="/extras" element={<Extras />} />
+          <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </TooltipProvider>

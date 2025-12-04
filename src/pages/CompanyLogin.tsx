@@ -72,10 +72,18 @@ const CompanyLogin = () => {
         <title>Company Login - Vyoma Placement Cell</title>
         <meta name="description" content="Login to your company account on Vyoma Placement Cell." />
       </Helmet>
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-        <Navbar />
+      <div
+        className="min-h-screen relative bg-fixed bg-center bg-cover"
+        style={{
+          backgroundImage:
+            'url("https://colorlib.com/wp/wp-content/uploads/sites/2/colorlib-logo-customizer.jpg")',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/30" />
+        <div className="relative z-10">
+          <Navbar />
 
-        <main className="container mx-auto px-4 py-16">
+          <main className="container mx-auto px-4 py-16">
           <div className="max-w-md mx-auto">
             {/* Header */}
             <div className="text-center mb-8">
@@ -167,6 +175,7 @@ const CompanyLogin = () => {
             </Card>
           </div>
         </main>
+        </div>
       </div>
     </>
   );

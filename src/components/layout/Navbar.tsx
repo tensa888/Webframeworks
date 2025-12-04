@@ -63,13 +63,7 @@ const Navbar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent side="bottom" className="w-56">
                 <DropdownMenuItem>
-                  <Link to="/become-partner" className="w-full block">Becoming partner</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/become-mentor" className="w-full block">Becoming mentor</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/upscale" className="w-full block">Upscale</Link>
+                  <Link to="/extras" className="w-full block">Explore Extras</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -100,14 +94,8 @@ const Navbar = () => {
               <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                 About
               </Link>
-              <Link to="/become-partner" className="text-muted-foreground hover:text-foreground transition-colors">
-                Becoming partner
-              </Link>
-              <Link to="/become-mentor" className="text-muted-foreground hover:text-foreground transition-colors">
-                Becoming mentor
-              </Link>
-              <Link to="/upscale" className="text-muted-foreground hover:text-foreground transition-colors">
-                Upscale
+              <Link to="/extras" className="text-muted-foreground hover:text-foreground transition-colors">
+                Extras
               </Link>
               <div className="flex gap-3 pt-4">
                 <Button variant="outline" asChild className="flex-1">

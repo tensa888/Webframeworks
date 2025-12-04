@@ -229,7 +229,7 @@ const Auth = () => {
       {/* Left side - Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <img
-          src="/login-hero.jpg"
+          src="https://colorlib.com/wp/wp-content/uploads/sites/2/colorlib-logo-customizer.jpg"
           alt="Professional using tablet"
           onError={(e) => {
             // fallback to bundled asset if public file isn't present

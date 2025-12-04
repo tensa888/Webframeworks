@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { generateOTP, sendOTPEmail, verifyOTP } from "../lib/emailService.js";
+import fileStore from "../lib/memoryStore.js";
 
 const router = express.Router();
 
@@ -22,17 +23,6 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ error: "Invalid or expired token" });
   }
 };
-
-// Middleware to check database connection
-router.use((req, res, next) => {
-  if (!res.locals.dbConnected) {
-    return res.status(503).json({ 
-      message: "Database connection unavailable",
-      error: "The database is currently offline. Please try again later."
-    });
-  }
-  next();
-});
 
 // POST /api/auth/send-otp
 router.post("/send-otp", async (req, res) => {
@@ -104,17 +94,16 @@ router.post("/signup", async (req, res) => {
     }
 
     const { fullName, email, username, password } = parse.data;
-    const User = res.locals.User;
 
     // Check if user already exists
-    const existing = await User.findOne({ where: { email } });
+    const existing = fileStore.findUserByEmail(email);
     if (existing) {
       return res.status(409).json({ message: "Email already in use" });
     }
 
     // Hash password and create user
     const hashed = await bcrypt.hash(password, 10);
-    const user = await User.create({
+    const user = fileStore.createUser({
       fullName,
       email,
       username,
@@ -122,7 +111,7 @@ router.post("/signup", async (req, res) => {
     });
 
     // Create JWT token
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET || "secret", {
+    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET || "secret", {
       expiresIn: "7d",
     });
 
@@ -130,7 +119,7 @@ router.post("/signup", async (req, res) => {
       message: "User created successfully", 
       token, 
       user: { 
-        id: user.id, 
+        id: user._id, 
         email: user.email, 
         fullName: user.fullName 
       } 
@@ -158,10 +147,9 @@ router.post("/login", async (req, res) => {
     }
 
     const { email, password } = parse.data;
-    const User = res.locals.User;
 
-    // Find user in database
-    const user = await User.findOne({ where: { email } });
+    // Find user in store
+    const user = fileStore.findUserByEmail(email);
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -173,7 +161,7 @@ router.post("/login", async (req, res) => {
     }
 
     // Create JWT token
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET || "secret", {
+    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET || "secret", {
       expiresIn: "7d",
     });
 
@@ -181,7 +169,7 @@ router.post("/login", async (req, res) => {
       message: "Authenticated successfully", 
       token, 
       user: { 
-        id: user.id, 
+        id: user._id, 
         email: user.email, 
         fullName: user.fullName 
       } 
@@ -212,32 +200,32 @@ router.put("/update-profile", verifyToken, async (req, res) => {
     }
 
     const { fullName, username } = parse.data;
-    const User = res.locals.User;
 
     // Find user by ID from token
-    const user = await User.findByPk(req.user.id);
+    const user = fileStore.users.find(u => u._id === req.user.id);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
     // Log before update
-    console.log(`[PROFILE UPDATE] User ID: ${user.id}, Email: ${user.email}`);
+    console.log(`[PROFILE UPDATE] User ID: ${user._id}, Email: ${user.email}`);
     console.log(`[PROFILE UPDATE] Before - fullName: "${user.fullName}", username: "${user.username}"`);
 
     // Update user fields if provided
     if (fullName) user.fullName = fullName;
     if (username) user.username = username;
+    user.updatedAt = new Date();
 
-    await user.save();
+    fileStore.saveData();
 
     // Log after update
     console.log(`[PROFILE UPDATE] After - fullName: "${user.fullName}", username: "${user.username}"`);
-    console.log(`[PROFILE UPDATE] Changes saved to database ✅`);
+    console.log(`[PROFILE UPDATE] Changes saved to file store ✅`);
 
     res.json({
       message: "Profile updated successfully",
       user: {
-        id: user.id,
+        id: user._id,
         email: user.email,
         fullName: user.fullName,
         username: user.username,

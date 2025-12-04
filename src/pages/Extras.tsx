@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useRef, useEffect, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Navbar from "@/components/layout/Navbar";
@@ -291,18 +291,34 @@ const UpscaleTab = () => {
   );
 };
 
-// Tab Button Component
-const TabButton = ({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) => (
+// Accessible Tab Button (forwarded ref)
+const TabButton = (
+  {
+    id,
+    active,
+    onClick,
+    onKeyDown,
+    children,
+    controls,
+  }: {
+    id: string;
+    active: boolean;
+    onClick: () => void;
+    onKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
+    children: React.ReactNode;
+    controls: string;
+  },
+  ref: React.Ref<HTMLButtonElement>
+) => (
   <button
+    id={id}
+    ref={ref}
+    role="tab"
+    aria-selected={active}
+    aria-controls={controls}
+    tabIndex={active ? 0 : -1}
     onClick={onClick}
+    onKeyDown={onKeyDown}
     className={`px-6 py-3 font-semibold rounded-lg transition-all ${
       active
         ? "bg-blue-600 text-white shadow-md"
@@ -313,9 +329,59 @@ const TabButton = ({
   </button>
 );
 
+const TabButtonWithRef = (forwardRef(TabButton) as unknown) as (
+  props: {
+    id: string;
+    active: boolean;
+    onClick: () => void;
+    onKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
+    children: React.ReactNode;
+    controls: string;
+  } & { ref?: React.Ref<HTMLButtonElement> }
+) => JSX.Element;
+
 // Main Extras Component
 const Extras = () => {
   const [activeTab, setActiveTab] = useState<TabType>("partner");
+  const tabs = [
+    { key: "partner", label: "Becoming Partner" },
+    { key: "mentor", label: "Becoming Mentor" },
+    { key: "upscale", label: "Upscale" },
+  ] as const;
+
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  useEffect(() => {
+    // keep ref array length in sync
+    tabRefs.current = tabRefs.current.slice(0, tabs.length);
+  }, [tabs.length]);
+
+  const focusTab = (index: number) => {
+    const el = tabRefs.current[index];
+    if (el) el.focus();
+  };
+
+  const handleTabKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const last = tabs.length - 1;
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      const next = index === last ? 0 : index + 1;
+      focusTab(next);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      const prev = index === 0 ? last : index - 1;
+      focusTab(prev);
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      focusTab(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      focusTab(last);
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setActiveTab(tabs[index].key as TabType);
+    }
+  };
 
   return (
     <>
@@ -339,32 +405,54 @@ const Extras = () => {
           </div>
 
           {/* Tab Navigation */}
-          <div className="mb-16 flex justify-center gap-4 flex-wrap">
-            <TabButton
-              active={activeTab === "partner"}
-              onClick={() => setActiveTab("partner")}
-            >
-              Becoming Partner
-            </TabButton>
-            <TabButton
-              active={activeTab === "mentor"}
-              onClick={() => setActiveTab("mentor")}
-            >
-              Becoming Mentor
-            </TabButton>
-            <TabButton
-              active={activeTab === "upscale"}
-              onClick={() => setActiveTab("upscale")}
-            >
-              Upscale
-            </TabButton>
+          <div
+            className="mb-16 flex justify-center gap-4 flex-wrap"
+            role="tablist"
+            aria-orientation="horizontal"
+          >
+            {tabs.map((t, i) => (
+              <TabButtonWithRef
+                key={t.key}
+                id={`tab-${t.key}`}
+                controls={`panel-${t.key}`}
+                ref={(el: HTMLButtonElement | null) => (tabRefs.current[i] = el)}
+                active={activeTab === t.key}
+                onClick={() => setActiveTab(t.key as TabType)}
+                onKeyDown={(e) => handleTabKeyDown(e, i)}
+              >
+                {t.label}
+              </TabButtonWithRef>
+            ))}
           </div>
 
           {/* Tab Content */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
-            {activeTab === "partner" && <PartnerTab />}
-            {activeTab === "mentor" && <MentorTab />}
-            {activeTab === "upscale" && <UpscaleTab />}
+            <div
+              id="panel-partner"
+              role="tabpanel"
+              aria-labelledby="tab-partner"
+              hidden={activeTab !== "partner"}
+            >
+              <PartnerTab />
+            </div>
+
+            <div
+              id="panel-mentor"
+              role="tabpanel"
+              aria-labelledby="tab-mentor"
+              hidden={activeTab !== "mentor"}
+            >
+              <MentorTab />
+            </div>
+
+            <div
+              id="panel-upscale"
+              role="tabpanel"
+              aria-labelledby="tab-upscale"
+              hidden={activeTab !== "upscale"}
+            >
+              <UpscaleTab />
+            </div>
           </div>
         </main>
       </div>

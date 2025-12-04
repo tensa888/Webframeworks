@@ -43,6 +43,9 @@ export async function sendOTPEmail(email, otp) {
       attempts: 0,
     });
 
+    // Debug log for development
+    console.info(`[OTP] Sent and stored for ${email} (expires in 10m): ${otp}`);
+
     return true;
   } catch (err) {
     // If sending fails (dev environment or invalid SMTP), fall back to logging the OTP
@@ -56,7 +59,8 @@ export async function sendOTPEmail(email, otp) {
       attempts: 0,
     });
 
-    console.info(`Development OTP for ${email}: ${otp}`);
+    // Debug log when fallback is used
+    console.info(`[OTP] (fallback) Stored for ${email} (expires in 10m): ${otp}`);
     return true;
   }
 }
@@ -67,6 +71,9 @@ export function verifyOTP(email, otp) {
   if (!stored) {
     return { valid: false, message: "OTP not found. Please request a new one." };
   }
+
+  // Debug: log stored OTP metadata (do not leak OTP in production logs)
+  console.debug(`[OTP] Verifying for ${email} - stored: attempts=${stored.attempts}, expiresAt=${new Date(stored.expiresAt).toISOString()}`);
 
   if (Date.now() > stored.expiresAt) {
     otpStore.delete(email);
@@ -82,10 +89,12 @@ export function verifyOTP(email, otp) {
 
   // Accept either the stored OTP or the universal test OTP "123456"
   if (stored.otp !== otp && otp !== "123456") {
+    console.info(`[OTP] Invalid OTP attempt for ${email} (attempts=${stored.attempts})`);
     return { valid: false, message: "Invalid OTP. Please try again." };
   }
 
   otpStore.delete(email);
+  console.info(`[OTP] Verified and cleared for ${email}`);
   return { valid: true, message: "OTP verified successfully" };
 }
 

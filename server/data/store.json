@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "_id": "1",
+      "fullName": "kartik",
+      "email": "2023adarshkumar.singh@vidyashilp.edu.in",
+      "username": "kartik",
+      "password": "$2b$10$jglYNgmjeWccAIA9cEsdXOS4Pp931eB5O/JOOU.qn2BnZTu.Y1rbK",
+      "createdAt": "2025-12-04T09:04:21.945Z",
+      "updatedAt": "2025-12-04T09:04:21.945Z"
+    },
+    {
+      "_id": "2",
+      "fullName": "suresh",
+      "email": "cisco@gmail.com",
+      "username": "suresh",
+      "password": "$2b$10$P6R7BDKea7gIiliTmZJ62.2CiN/2cYtQmDVogE411u5NJuVufKMrO",
+      "createdAt": "2025-12-04T09:33:01.294Z",
+      "updatedAt": "2025-12-04T09:33:01.294Z"
+    }
+  ],
+  "nextId": 3
+}
